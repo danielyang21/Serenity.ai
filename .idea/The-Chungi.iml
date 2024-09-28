@@ -6,6 +6,18 @@
       <excludeFolder url="file://$MODULE_DIR$/chungi/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/chungi/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/chungi/build" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/flutter_secure_storage/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/flutter_secure_storage/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/flutter_secure_storage/build" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/flutter_secure_storage/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/flutter_secure_storage/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/flutter_secure_storage/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/speech_to_text/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/speech_to_text/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/speech_to_text/build" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/speech_to_text/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/speech_to_text/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/chungi/ios/.symlinks/plugins/speech_to_text/example/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
