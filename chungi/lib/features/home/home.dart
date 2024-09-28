@@ -1,10 +1,9 @@
+import 'package:chungi/common/api.dart';
+import 'package:chungi/common/color_theme.cdart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:chungi/common/color_theme.cdart.dart';
-
-import '../../common/api.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -35,7 +34,7 @@ class _HomeState extends State<Home> {
   }
 
   void _stopListening() async {
-    await postToOpenAI(_lastWords);
+    await sendToOpenAI(_lastWords);
     setState(() {
       _lastWords = '';
     });
@@ -52,9 +51,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {},
+        onPressed: () async {
+          await sendToOpenAI("Very Sad");
+        },
         tooltip: 'Listen',
-        child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
+        child: const Icon(Icons.play_arrow),
       ),
       appBar: AppBar(
         title: const Text('Thera.ai'),
@@ -110,6 +111,21 @@ class _HomeState extends State<Home> {
             )
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        //currentIndex: _selectedIndex,
+        selectedItemColor: AppTheme.kDarkGrey,
+        //onTap: _onItemTapped,
       ),
     );
   }
