@@ -1,3 +1,4 @@
+import 'package:chungi/common/CustomBottomNavBar.dart';
 import 'package:chungi/common/api.dart';
 import 'package:chungi/common/color_theme.cdart.dart';
 import 'package:flutter/material.dart';
@@ -21,25 +22,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   late AnimationController _pulseAnimationController;
   late AnimationController _waveAnimationController;
   late Animation<double> _pulseAnimation;
-  int _selectedIndex = 0;
   bool _isListening = false;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
-    _pulseAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-    _pulseAnimation =
-        Tween<double>(begin: 1, end: 1.2).animate(_pulseAnimationController);
-
-    _waveAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
-      vsync: this,
-    );
-    _waveAnimationController.repeat();
+    _initAnimations();
   }
 
   @override
@@ -52,6 +42,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void _initSpeech() async {
     _speechEnabled = await _speechToText.initialize();
     setState(() {});
+  }
+
+  void _initAnimations() {
+    _pulseAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _pulseAnimation =
+        Tween<double>(begin: 1, end: 1.2).animate(_pulseAnimationController);
+
+    _waveAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _waveAnimationController.repeat();
   }
 
   void _startListening() async {
@@ -79,16 +84,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: GestureDetector(
             onTap: () async {
               await makePostRequest();
@@ -114,125 +114,82 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
             ),
             const SizedBox(height: 30),
-            GestureDetector(
-              onTapDown: (_) {
-                if (!_isListening) {
-                  HapticFeedback.heavyImpact();
-                  _startListening();
-                }
-              },
-              onTapUp: (_) {
-                if (_isListening) {
-                  HapticFeedback.heavyImpact();
-                  _stopListening();
-                }
-              },
-              onTapCancel: () {
-                if (_isListening) {
-                  HapticFeedback.heavyImpact();
-                  _stopListening();
-                }
-              },
-              child: AnimatedBuilder(
-                animation: Listenable.merge(
-                    [_pulseAnimationController, _waveAnimationController]),
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _isListening ? _pulseAnimation.value : 1.0,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _isListening ? Colors.red : Color(0xff97A870),
-                        //AppTheme.kDarkGrey,
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ...List.generate(
-                            3,
-                            (index) => Positioned.fill(
-                              child: CustomPaint(
-                                painter: WavePainter(
-                                  animationValue:
-                                      _waveAnimationController.value,
-                                  waveIndex: index,
-                                  color: _isListening
-                                      ? Colors.red
-                                      : AppTheme.kDarkGrey,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Icon(
-                            _isListening ? Icons.mic : Icons.mic_off,
-                            color: Colors.white,
-                            size: 50,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            _buildMicButton(),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            // Voice Button
-            InkWell(
-              onTap: () => _onItemTapped(0),
-              child: Container(
-                padding: const EdgeInsets.all(
-                    8), // Smaller padding for a smaller tap area
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.keyboard_voice,
-                      color: _selectedIndex == 0 ? Colors.red : Colors.grey,
-                    ),
-                    Text(
-                      'Voice',
-                      style: TextStyle(
-                        color: _selectedIndex == 0 ? Colors.red : Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+      bottomNavigationBar: CustomBottomAppBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _buildMicButton() {
+    return GestureDetector(
+      onTapDown: (_) {
+        if (!_isListening) {
+          HapticFeedback.heavyImpact();
+          _startListening();
+        }
+      },
+      onTapUp: (_) {
+        if (_isListening) {
+          HapticFeedback.heavyImpact();
+          _stopListening();
+        }
+      },
+      onTapCancel: () {
+        if (_isListening) {
+          HapticFeedback.heavyImpact();
+          _stopListening();
+        }
+      },
+      child: AnimatedBuilder(
+        animation: Listenable.merge(
+            [_pulseAnimationController, _waveAnimationController]),
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _isListening ? _pulseAnimation.value : 1.0,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _isListening ? Colors.red : Color(0xff97A870),
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  ..._buildWaves(),
+                  Icon(
+                    _isListening ? Icons.mic : Icons.mic_off,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                ],
               ),
             ),
-            // Meditation Button
-            InkWell(
-              onTap: () => _onItemTapped(1),
-              splashColor:
-                  Colors.red.withOpacity(0.5), // Customize splash color
-              child: Container(
-                padding: const EdgeInsets.all(
-                    8), // Smaller padding for a smaller tap area
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.self_improvement_sharp,
-                      color: _selectedIndex == 1 ? Colors.red : Colors.grey,
-                    ),
-                    Text(
-                      'Meditation',
-                      style: TextStyle(
-                        color: _selectedIndex == 1 ? Colors.red : Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          );
+        },
+      ),
+    );
+  }
+
+  List<Widget> _buildWaves() {
+    return List.generate(
+      3,
+      (index) => Positioned.fill(
+        child: CustomPaint(
+          painter: WavePainter(
+            animationValue: _waveAnimationController.value,
+            waveIndex: index,
+            color: _isListening ? Colors.red : AppTheme.kDarkGrey,
+          ),
         ),
       ),
     );
