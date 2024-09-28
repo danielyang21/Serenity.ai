@@ -1,7 +1,10 @@
 import os
 import uuid
+<<<<<<< HEAD
 import requests
 
+=======
+>>>>>>> 12738aaaae8886bd9992fdd2a12a05fb49d0dd2e
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
 

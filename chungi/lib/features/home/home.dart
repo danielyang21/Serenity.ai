@@ -89,7 +89,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Thera.ai'),
+        title: GestureDetector(
+            onTap: () async {
+              await makePostRequest();
+            },
+            child: const Text('Thera.ai')),
       ),
       body: Center(
         child: Column(
@@ -140,7 +144,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       height: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _isListening ? Colors.red : AppTheme.kDarkGrey,
+                        color: _isListening ? Colors.red : Color(0xff97A870),
+                        //AppTheme.kDarkGrey,
                       ),
                       child: Stack(
                         alignment: Alignment.center,
@@ -175,20 +180,60 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppTheme.kDarkGrey,
-        onTap: _onItemTapped,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            // Voice Button
+            InkWell(
+              onTap: () => _onItemTapped(0),
+              child: Container(
+                padding: const EdgeInsets.all(
+                    8), // Smaller padding for a smaller tap area
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.keyboard_voice,
+                      color: _selectedIndex == 0 ? Colors.red : Colors.grey,
+                    ),
+                    Text(
+                      'Voice',
+                      style: TextStyle(
+                        color: _selectedIndex == 0 ? Colors.red : Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Meditation Button
+            InkWell(
+              onTap: () => _onItemTapped(1),
+              splashColor:
+                  Colors.red.withOpacity(0.5), // Customize splash color
+              child: Container(
+                padding: const EdgeInsets.all(
+                    8), // Smaller padding for a smaller tap area
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.self_improvement_sharp,
+                      color: _selectedIndex == 1 ? Colors.red : Colors.grey,
+                    ),
+                    Text(
+                      'Meditation',
+                      style: TextStyle(
+                        color: _selectedIndex == 1 ? Colors.red : Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
