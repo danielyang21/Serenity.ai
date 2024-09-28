@@ -89,7 +89,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Thera.ai'),
+        title: GestureDetector(
+            onTap: () async {
+              print('tapped');
+              await makePostRequest();
+            },
+            child: const Text('Thera.ai')),
       ),
       body: Center(
         child: Column(

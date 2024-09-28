@@ -1,6 +1,5 @@
 import os
 import uuid
-
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
 
@@ -65,10 +64,6 @@ def process_data():
 
 if __name__ == "__main__":
     app.run(debug=True, host = '0.0.0.0')
-
-
-
-
 
 
 #text_to_speech_file("This is........ a pause.")

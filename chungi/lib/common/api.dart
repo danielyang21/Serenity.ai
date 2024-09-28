@@ -3,17 +3,22 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-const String OpenAIAPIKEY =
-    "sk-mSzBOG-G8Ngmo8gvz79tLx_HC870wA2V_yBMrvM3W7T3BlbkFJoXLIB7PO3tkW33_MIuaVjaWPtiBpcQI19LorzzyeAA";
+void safePrint(Object? o) {
+  if (kDebugMode) {
+    print(o);
+  }
+}
 
 Future<void> sendToOpenAI(String userSpeechToTextInput) async {
   const url = 'https://api.openai.com/v1/chat/completions';
+  const String OPENAPIKEY = "sk-mSzBOG"
+      "-G8Ngmo8gvz79tLx_HC870wA2V_yBMrvM3W7T3BlbkFJoXLIB7PO3tkW33_MIuaVjaWPtiBpcQI19LorzzyeAA";
 
   final response = await http.post(
     Uri.parse(url),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $OpenAIAPIKEY',
+      'Authorization': 'Bearer $OPENAPIKEY;',
     },
     body: jsonEncode({
       'model': 'gpt-4o-mini',
@@ -54,12 +59,26 @@ AI: "I'm sorry to hear you're feeling sad. It can be a difficult emotion to expe
   );
 
   if (response.statusCode == 200) {
-    if (kDebugMode) {
-      print('Response data: ${response.body}');
-    }
+    safePrint('Response data: ${response.body}');
   } else {
-    if (kDebugMode) {
-      print('Error: ${response.statusCode} - ${response.body}');
+    safePrint('Error: ${response.statusCode} - ${response.body}');
+  }
+}
+
+Future<void> makePostRequest() async {
+  final url = Uri.parse('http://10.197.6.246:5001/api/process');
+  final headers = {"Content-Type": "application/json"};
+  final body = jsonEncode({"text": "Hello world"});
+
+  try {
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      safePrint('Response data: ${response.body}');
+    } else {
+      safePrint('Error: ${response.statusCode}');
     }
+  } catch (e) {
+    safePrint('Error occurred: $e');
   }
 }
