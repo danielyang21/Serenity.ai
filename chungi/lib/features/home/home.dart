@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import 'animation/math.dart';
+
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
 
@@ -12,15 +14,39 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
+  late AnimationController _pulseAnimationController;
+  late AnimationController _waveAnimationController;
+  late Animation<double> _pulseAnimation;
+  int _selectedIndex = 0;
+  bool _isListening = false;
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
+    _pulseAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _pulseAnimation =
+        Tween<double>(begin: 1, end: 1.2).animate(_pulseAnimationController);
+
+    _waveAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _waveAnimationController.repeat();
+  }
+
+  @override
+  void dispose() {
+    _pulseAnimationController.dispose();
+    _waveAnimationController.dispose();
+    super.dispose();
   }
 
   void _initSpeech() async {
@@ -30,15 +56,21 @@ class _HomeState extends State<Home> {
 
   void _startListening() async {
     await _speechToText.listen(onResult: _onSpeechResult);
-    setState(() {});
+    setState(() {
+      _isListening = true;
+    });
+    _pulseAnimationController.repeat(reverse: true);
   }
 
   void _stopListening() async {
     await sendToOpenAI(_lastWords);
     setState(() {
       _lastWords = '';
+      _isListening = false;
     });
     await _speechToText.stop();
+    _pulseAnimationController.stop();
+    _pulseAnimationController.reset();
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
@@ -47,16 +79,15 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await sendToOpenAI("Very Sad");
-        },
-        tooltip: 'Listen',
-        child: const Icon(Icons.play_arrow),
-      ),
       appBar: AppBar(
         title: const Text('Thera.ai'),
       ),
@@ -78,37 +109,69 @@ class _HomeState extends State<Home> {
                 child: Text(_lastWords),
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             GestureDetector(
-              onTap: () {
-                if (_speechToText.isNotListening) {
+              onTapDown: (_) {
+                if (!_isListening) {
                   HapticFeedback.heavyImpact();
                   _startListening();
-                } else {
+                }
+              },
+              onTapUp: (_) {
+                if (_isListening) {
                   HapticFeedback.heavyImpact();
                   _stopListening();
                 }
               },
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: AppTheme.kDarkGrey),
-                child: _speechToText.isNotListening
-                    ? const Icon(
-                        Icons.mic_off,
-                        color: Colors.white,
-                        size: 50,
-                      )
-                    : const Icon(
-                        Icons.mic,
-                        color: Colors.white,
-                        size: 50,
+              onTapCancel: () {
+                if (_isListening) {
+                  HapticFeedback.heavyImpact();
+                  _stopListening();
+                }
+              },
+              child: AnimatedBuilder(
+                animation: Listenable.merge(
+                    [_pulseAnimationController, _waveAnimationController]),
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _isListening ? _pulseAnimation.value : 1.0,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _isListening ? Colors.red : AppTheme.kDarkGrey,
                       ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          ...List.generate(
+                            3,
+                            (index) => Positioned.fill(
+                              child: CustomPaint(
+                                painter: WavePainter(
+                                  animationValue:
+                                      _waveAnimationController.value,
+                                  waveIndex: index,
+                                  color: _isListening
+                                      ? Colors.red
+                                      : AppTheme.kDarkGrey,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            _isListening ? Icons.mic : Icons.mic_off,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -123,9 +186,9 @@ class _HomeState extends State<Home> {
             label: 'Settings',
           ),
         ],
-        //currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex,
         selectedItemColor: AppTheme.kDarkGrey,
-        //onTap: _onItemTapped,
+        onTap: _onItemTapped,
       ),
     );
   }
