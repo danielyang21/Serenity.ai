@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSSpeechRecognitionUsageDescription</key>
+    <string>This app uses speech recognition to convert your voice commands into text for voice-driven features.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires access to the microphone to capture voice commands and audio input for speech recognition and voice features.</string>
 </dict>
 </plist>
