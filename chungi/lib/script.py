@@ -11,6 +11,7 @@ client = ElevenLabs(
     api_key=ELEVENLABS_API_KEY
 )
 
+#save given text to an mp3 file
 def text_to_speech_file(text: str) -> str:
 
     #use charlotte voice id, and input settings for the voice
@@ -35,4 +36,5 @@ def text_to_speech_file(text: str) -> str:
     # Return the path of the saved audio file
     return save_file_path
 
-text_to_speech_file("In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.")
+#text_to_speech_file("In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.")
+text_to_speech_file("I'm sorry to hear that you feel this way. Here are some ways to cheer yourself up.")
