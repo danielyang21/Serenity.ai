@@ -18,11 +18,13 @@ dependencies:
   flutter_dotenv: ^5.1.0
   http: ^1.2.2
   riverpod: ^2.5.1
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+
 
 
 flutter:
