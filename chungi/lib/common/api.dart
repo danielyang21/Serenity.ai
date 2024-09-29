@@ -9,16 +9,17 @@ void safePrint(Object? o) {
   }
 }
 
-Future<void> sendToOpenAI(String userSpeechToTextInput) async {
+const String OPENAPIKEY =
+    "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";
+
+Future<String> sendToOpenAI(String userSpeechToTextInput) async {
   const url = 'https://api.openai.com/v1/chat/completions';
-  const String OPENAPIKEY = "sk-mSzBOG"
-      "-G8Ngmo8gvz79tLx_HC870wA2V_yBMrvM3W7T3BlbkFJoXLIB7PO3tkW33_MIuaVjaWPtiBpcQI19LorzzyeAA";
 
   final response = await http.post(
     Uri.parse(url),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $OPENAPIKEY;',
+      'Authorization': 'Bearer $OPENAPIKEY',
     },
     body: jsonEncode({
       'model': 'gpt-4o-mini',
@@ -26,28 +27,30 @@ Future<void> sendToOpenAI(String userSpeechToTextInput) async {
         {
           'role': 'system',
           'content': """
-You are a supportive AI assistant designed to engage in multi-turn conversations 
-about mental health and emotional well-being. Your role is to listen actively, ask 
-thoughtful questions, and guide users towards insights and coping strategies.
+          You are a supportive AI assistant designed to engage in 
+          conversations about emotional well-being. Your role is to listen 
+          actively and guide users towards insights and coping strategies.
+
 Guidelines:
-1. Begin with empathetic acknowledgment of the user's stated feelings.
-2. Ask open-ended questions to explore the context and reasons behind their feelings.
-3. Reflect back what you've heard to ensure understanding and show you're listening.
-4. Gradually explore the impact of the situation and current coping strategies.
-5. Collaborate with the user to identify potential solutions or coping methods.
-6. Help the user develop a concrete action plan if appropriate.
-7. Offer to follow up on their progress in future conversations.
+ 
+Only talk about feelings when the user brings it up, when the user says they 
+are not feeling well, provide ONE singular potential solution to make them 
+feel better. Otherwise just act friendly
 
-Remember: 
-- Allow the user to set the pace and depth of the conversation.
-- Don't rush to provide solutions before fully understanding the situation.
-- Encourage professional help for serious concerns.
-- Maintain clear boundaries about your role as a supportive AI, not a therapist.
+Offer to follow up on their progress in future conversations.
+Remember:
 
-Example starter:
+Allow the user to set the pace and depth of the conversation.
+Encourage professional help for serious concerns.
+Maintain clear boundaries about your role as a supportive AI, not a therapist.
+Example Starter:
+
 User: "I am feeling sad."
-AI: "I'm sorry to hear you're feeling sad. It can be a difficult emotion to experience. Could you tell me a bit more about what's been going on that's contributing to this feeling of sadness?"
-              """
+
+AI: "I'm sorry to hear that you're feeling sad. Sometimes engaging in a 
+favorite activity or talking to a friend can help lift your spirits."
+Do not use special styling, make your response only consist of words
+             """
         },
         {
           'role': 'user',
@@ -59,9 +62,15 @@ AI: "I'm sorry to hear you're feeling sad. It can be a difficult emotion to expe
   );
 
   if (response.statusCode == 200) {
-    safePrint('Response data: ${response.body}');
+    final responseData = jsonDecode(response.body);
+    String aiResponse = responseData['choices'][0]['message']['content'];
+
+    safePrint('Response data: $aiResponse');
+    return aiResponse;
+    //return
   } else {
     safePrint('Error: ${response.statusCode} - ${response.body}');
+    return "Error";
   }
 }
 
@@ -83,32 +92,42 @@ Future<void> makePostRequest() async {
   }
 }
 
-Future<String> sendHelloWorld(String userInput) async {
-  const String url = 'http://172.20.10.2:5001/api/process';
+Future<String> callTextToSpeechAPI(String text) async {
+  final url =
+      Uri.parse('https://h6sc2qypwk.execute-api.us-east-1.amazonaws.com/Dev');
 
-  // Create the request body
-  Map<String, String> requestBody = {
-    'text': userInput,
+  // Prepare the request body as per your API's expectations
+  final requestBody = {
+    'body': jsonEncode({'text': text}),
   };
 
   try {
-    // Send POST request
     final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: jsonEncode(requestBody),
     );
 
-    // Check the response
     if (response.statusCode == 200) {
-      print('Request successful: ${response.body}');
-      final result = json.decode(response.body);
-      return result["result"];
+      // Request was successful
+      final responseData = jsonDecode(response.body);
+      safePrint('API Response: $responseData');
+
+      // Parse the 'body' field again because it's a stringified JSON
+      final bodyData =
+          jsonDecode(responseData['body']); // <-- Correct this line
+      final result = bodyData['result']; // Now safely access the 'result' field
+      safePrint('Generated Audio File URL: $result');
+      return result.toString();
     } else {
-      print('Request failed with status: ${response.statusCode}');
-      return 'error';
+      safePrint('Request failed with status: ${response.statusCode}');
+      safePrint('Error body: ${response.body}');
+      return "Error";
     }
-  } catch (error) {
-    return 'error';
+  } catch (e) {
+    safePrint('An error occurred: $e');
+    return "Error";
   }
 }

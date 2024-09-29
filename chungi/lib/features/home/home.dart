@@ -1,12 +1,10 @@
-import 'dart:io';
-
-// import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:chungi/common/CustomBottomNavBar.dart';
 import 'package:chungi/common/api.dart';
 import 'package:chungi/common/color_theme.cdart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:just_audio/just_audio.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -72,14 +70,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _stopListening() async {
-    await sendToOpenAI(_lastWords);
-    setState(() {
-      _lastWords = '';
-      _isListening = false;
-    });
-    await _speechToText.stop();
-    _pulseAnimationController.stop();
-    _pulseAnimationController.reset();
+    try {
+      final ai = await sendToOpenAI(_lastWords);
+      safePrint("User input $_lastWords");
+      safePrint("Ai response $ai");
+      final dir = await callTextToSpeechAPI(ai);
+      safePrint('MP3 File root $dir');
+      await playAudioFromUrl(dir);
+
+      setState(() {
+        _lastWords = '';
+        _isListening = false;
+      });
+
+      await _speechToText.stop();
+    } catch (e) {
+      safePrint('Error occurred: $e');
+    } finally {
+      _pulseAnimationController.stop();
+      _pulseAnimationController.reset();
+    }
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
@@ -88,45 +98,33 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  // Future<void> playAudio(String filePath) async {
-  //   final audioPlayer = AssetsAudioPlayer.newPlayer();
-  //   try {
-  //     await audioPlayer.open(
-  //       Audio.file(filePath),
-  //       autoStart: true,
-  //       showNotification: true,
-  //     );
-  //   } catch (error) {
-  //     print("Error playing audio: $error");
-  //     throw error; // Re-throw the error to be caught by the caller
-  //   }
-  // }
+  Future<void> playAudioFromUrl(String url) async {
+    final player = AudioPlayer();
+    try {
+      // Attempt to play audio from the URL
+      await player.play(UrlSource(url));
+
+      // Optionally, listen for when the audio finishes playing
+      await player.onPlayerComplete.first;
+      print('Audio playback completed.');
+    } catch (error) {
+      print('Error playing audio: $error');
+    } finally {
+      // Dispose of the player to free resources
+      player.dispose();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: () async {
         try {
-          final dir = await sendHelloWorld("Hello world");
-          final directory = await getApplicationDocumentsDirectory();
-          final filePath = '${directory.path}/$dir';
-
-          print("Attempting to play audio file: $filePath");
-
-          if (await File(filePath).exists()) {
-            // await playAudio(filePath);
-          } else {
-            print("Audio file does not exist at path: $filePath");
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Audio file not found")),
-            );
-          }
-        } catch (e) {
-          print("Error: $e");
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Error playing audio: $e")),
-          );
-        }
+          await sendToOpenAI("Hello");
+          //final dir = await callTextToSpeechAPI("");
+          // safePrint(dir);
+          // await playAudioFromUrl(dir);
+        } catch (e) {}
       }),
       appBar: AppBar(
         automaticallyImplyLeading: false,
