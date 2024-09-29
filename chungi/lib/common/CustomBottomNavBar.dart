@@ -26,7 +26,7 @@ class CustomBottomAppBar extends StatelessWidget {
         ),
       ],
       currentIndex: selectedIndex,
-      selectedItemColor: Colors.red,
+      // selectedItemColor: Colors.red,
       onTap: (index) {
         onItemTapped(index);
         _navigateToPage(context, index);
