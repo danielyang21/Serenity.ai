@@ -52,21 +52,14 @@ app = Flask(__name__)
 
 
 # Endpoint to serve the MP3 file
-@app.route('/mp3/<filename>')
-def serve_mp3(filename):
-    return send_from_directory(MP3_DIRECTORY, filename)
+@app.route('/tts/<filename>')
+def run_script():
+    result = {"message": "Python script executed successfully!"}
+    return jsonify(result)
 
-# Endpoint to generate and return the MP3 file URL
-@app.route('/generate_audio', methods=['POST'])
-def generate_audio():
-    text = request.args.get('text', 'Default text if none provided')
-    file_path = text_to_speech_file(text)
-    file_name = os.path.basename(file_path)
-    file_url = f"http://localhost:5000/mp3/{file_name}"
-    return jsonify({'file_url': file_url})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host = '0.0.0.0', port = 5000, debug=True)
 
 
 
