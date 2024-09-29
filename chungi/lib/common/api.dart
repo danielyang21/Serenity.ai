@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 void safePrint(Object? o) {
@@ -9,10 +10,8 @@ void safePrint(Object? o) {
   }
 }
 
-const String OPENAPIKEY =
-    "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";
-
 Future<String> sendToOpenAI(String userSpeechToTextInput) async {
+  final OPENAPIKEY = dotenv.get("OPENAIAPIKEY");
   const url = 'https://api.openai.com/v1/chat/completions';
 
   final response = await http.post(
