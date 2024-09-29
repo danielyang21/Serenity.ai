@@ -16,7 +16,6 @@ dependencies:
   speech_to_text: ^7.0.0
   chat_gpt_sdk: ^3.1.2
   flutter_dotenv: ^5.1.0
-  flutter_secure_storage: ^7.0.0
   http: ^1.2.2
   riverpod: ^2.5.1
 
@@ -27,6 +26,8 @@ dev_dependencies:
 
 
 flutter:
+  assets:
+    - assets/
 
   uses-material-design: true
 

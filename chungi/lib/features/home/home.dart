@@ -90,32 +90,36 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: GestureDetector(
-            onTap: () async {
-              await makePostRequest();
-            },
-            child: const Text('Thera.ai')),
+          onTap: () async {
+            await makePostRequest();
+          },
+          child: const Text('Thera.ai'),
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Recognized words:',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-            SizedBox(
-              height: 400,
-              child: Container(
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Your existing widgets
+              Container(
                 padding: const EdgeInsets.all(16),
-                child: Text(_lastWords),
+                child: const Text(
+                  'Recognized words:',
+                  style: TextStyle(fontSize: 20.0),
+                ),
               ),
-            ),
-            const SizedBox(height: 30),
-            _buildMicButton(),
-          ],
+              SizedBox(
+                height: 400,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(_lastWords),
+                ),
+              ),
+              const SizedBox(height: 30),
+              _buildMicButton(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomAppBar(
