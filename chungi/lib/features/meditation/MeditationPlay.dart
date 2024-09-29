@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 
 class MeditationPlay extends StatefulWidget {
   final String imagePath;
   final String title;
   final String audioPath;
+
   const MeditationPlay({
     Key? key,
     required this.imagePath,
     required this.title,
     required this.audioPath,
   }) : super(key: key);
+
   @override
   _MeditationPlayState createState() => _MeditationPlayState();
 }
@@ -20,6 +22,7 @@ class _MeditationPlayState extends State<MeditationPlay> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+
   @override
   void initState() {
     super.initState();
@@ -82,7 +85,7 @@ class _MeditationPlayState extends State<MeditationPlay> {
           leading: Padding(
             padding: const EdgeInsets.only(top: 13, left: 20),
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.white,
                 size: 40,
@@ -98,7 +101,8 @@ class _MeditationPlayState extends State<MeditationPlay> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/treeBackground3.png', // Replace with your background image asset
+              'assets/treeBackground3.png',
+              // Replace with your background image asset
               fit: BoxFit.cover,
             ),
           ),
@@ -111,41 +115,43 @@ class _MeditationPlayState extends State<MeditationPlay> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 80),
+                const SizedBox(height: 80),
                 // Title Text
                 Text(
                   widget.title, // Use the passed title
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Meditation Image
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Row(
-                      children: [
-                        SizedBox(width: 65),
-                        Image.asset(
-                          widget.imagePath, // Use the passed image path
-                          width: 330,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 65),
+                          Image.asset(
+                            widget.imagePath, // Use the passed image path
+                            width: 320,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 // Audio Controls (Progress and Buttons)
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Column(
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Progress bar
                       Slider(
                         value: position.inSeconds.toDouble(),
@@ -163,15 +169,15 @@ class _MeditationPlayState extends State<MeditationPlay> {
                         children: [
                           Text(
                             formatDuration(position),
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           Text(
                             formatDuration(duration),
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Playback buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

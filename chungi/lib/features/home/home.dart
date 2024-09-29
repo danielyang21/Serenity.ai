@@ -1,10 +1,9 @@
+import 'package:Serenity.ai/common/CustomBottomNavBar.dart';
+import 'package:Serenity.ai/common/api.dart';
+import 'package:Serenity.ai/common/color_theme.cdart.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chungi/common/CustomBottomNavBar.dart';
-import 'package:chungi/common/api.dart';
-import 'package:chungi/common/color_theme.cdart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:just_audio/just_audio.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -118,22 +117,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        try {
-          await sendToOpenAI("Hello");
-          //final dir = await callTextToSpeechAPI("");
-          // safePrint(dir);
-          // await playAudioFromUrl(dir);
-        } catch (e) {}
-      }),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: GestureDetector(
-          onTap: () async {
-            await makePostRequest();
-          },
-          child: const Text('Thera.ai'),
-        ),
+        title: const Text('Serenity.ai'),
       ),
       body: Container(
         child: Center(

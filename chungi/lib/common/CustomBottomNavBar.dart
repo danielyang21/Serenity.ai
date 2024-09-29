@@ -1,16 +1,17 @@
-import 'package:chungi/features/home/home.dart';
-import 'package:chungi/features/meditation/meditation.dart';
 import 'package:flutter/material.dart';
+
+import '../features/home/home.dart';
+import '../features/meditation/meditation.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
 
   const CustomBottomAppBar({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onItemTapped,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CustomBottomAppBar extends StatelessWidget {
           label: 'Meditation',
         ),
       ],
-      currentIndex: selectedIndex,
+      //urrentIndex: selectedIndex,
       // selectedItemColor: Colors.red,
       onTap: (index) {
         onItemTapped(index);

@@ -1,4 +1,4 @@
-import 'package:chungi/common/CustomBottomNavBar.dart';
+import 'package:Serenity.ai/common/CustomBottomNavBar.dart';
 import 'package:flutter/material.dart';
 
 import 'MeditationPlay.dart';
@@ -34,8 +34,8 @@ class _MeditationState extends State<Meditation> {
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.only(top: 30, left: 50),
+          const Padding(
+            padding: EdgeInsets.only(top: 40, left: 50),
             child: Text(
               'Guided Meditation',
               style: TextStyle(
@@ -45,22 +45,20 @@ class _MeditationState extends State<Meditation> {
               ),
             ),
           ),
-
-          // Foreground Content
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment:
                     MainAxisAlignment.center, // Centers vertically
                 children: [
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   GestureDetector(
                     onTap: () {
                       // Navigate to MeditationPlay with parameters
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MeditationPlay(
+                          builder: (context) => const MeditationPlay(
                             imagePath: 'assets/card3hd.png',
                             title: 'Mindfulness',
                             audioPath: 'mindfulness.mp3',
@@ -71,12 +69,12 @@ class _MeditationState extends State<Meditation> {
                     child: Center(
                       child: Image.asset(
                         'assets/pic3HD.png',
-                        width: 360,
+                        width: 300,
                       ),
                     ),
                   ),
 
-                  Center(
+                  const Center(
                     child: Text(
                       'Mindfulness',
                       style: TextStyle(
@@ -87,7 +85,7 @@ class _MeditationState extends State<Meditation> {
                     ),
                   ),
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   GestureDetector(
                     onTap: () {
@@ -95,7 +93,7 @@ class _MeditationState extends State<Meditation> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MeditationPlay(
+                          builder: (context) => const MeditationPlay(
                             imagePath: 'assets/card1hd.png',
                             title: 'Anxiety',
                             audioPath: 'anxiety.mp3',
@@ -106,12 +104,12 @@ class _MeditationState extends State<Meditation> {
                     child: Center(
                       child: Image.asset(
                         'assets/pic1HD.png',
-                        width: 360,
+                        width: 300,
                       ),
                     ),
                   ),
 
-                  Center(
+                  const Center(
                     child: Text(
                       'Anxiety',
                       style: TextStyle(
@@ -130,7 +128,7 @@ class _MeditationState extends State<Meditation> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MeditationPlay(
+                          builder: (context) => const MeditationPlay(
                             imagePath: 'assets/card2hd.png',
                             title: 'Positivity',
                             audioPath: 'positive.mp3',
@@ -141,12 +139,12 @@ class _MeditationState extends State<Meditation> {
                     child: Center(
                       child: Image.asset(
                         'assets/pic2HD.png',
-                        width: 360,
+                        width: 300,
                       ),
                     ),
                   ),
 
-                  Center(
+                  const Center(
                     child: Text(
                       'Positivity',
                       style: TextStyle(

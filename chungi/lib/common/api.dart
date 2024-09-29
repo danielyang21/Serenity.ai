@@ -26,15 +26,16 @@ Future<String> sendToOpenAI(String userSpeechToTextInput) async {
         {
           'role': 'system',
           'content': """
-          You are a supportive AI assistant designed to engage in 
-          conversations about emotional well-being. Your role is to listen 
-          actively and guide users towards insights and coping strategies.
+          You are a supportive assistant named Charlotte designed to engage
+           in conversations about emotional well-being. Your role is gently guide 
+          users towards insights and coping strategies.
 
 Guidelines:
  
 Only talk about feelings when the user brings it up, when the user says they 
 are not feeling well, provide ONE singular potential solution to make them 
-feel better. Otherwise just act friendly
+feel better. Otherwise just act friendly. If you recommend them to be mindful
+ or breathing exercises, recommend the guided meditations in the app.  
 
 Offer to follow up on their progress in future conversations.
 Remember:
@@ -73,29 +74,9 @@ Do not use special styling, make your response only consist of words
   }
 }
 
-Future<void> makePostRequest() async {
-  final url = Uri.parse('http://10.197.6.246:5001/api/process');
-  final headers = {"Content-Type": "application/json"};
-  final body = jsonEncode({"text": "Hello world"});
-
-  try {
-    final response = await http.post(url, headers: headers, body: body);
-
-    if (response.statusCode == 200) {
-      safePrint('Response data: ${response.body}');
-    } else {
-      safePrint('Error: ${response.statusCode}');
-    }
-  } catch (e) {
-    safePrint('Error occurred: $e');
-  }
-}
-
 Future<String> callTextToSpeechAPI(String text) async {
   final url =
       Uri.parse('https://h6sc2qypwk.execute-api.us-east-1.amazonaws.com/Dev');
-
-  // Prepare the request body as per your API's expectations
   final requestBody = {
     'body': jsonEncode({'text': text}),
   };
@@ -110,11 +91,8 @@ Future<String> callTextToSpeechAPI(String text) async {
     );
 
     if (response.statusCode == 200) {
-      // Request was successful
       final responseData = jsonDecode(response.body);
       safePrint('API Response: $responseData');
-
-      // Parse the 'body' field again because it's a stringified JSON
       final bodyData =
           jsonDecode(responseData['body']); // <-- Correct this line
       final result = bodyData['result']; // Now safely access the 'result' field
