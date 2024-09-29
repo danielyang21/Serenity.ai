@@ -2,8 +2,7 @@ import os
 import uuid
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
-
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 
 
 ELEVENLABS_API_KEY="sk_bfc24b20358532f842db22c6ac572e26c4f016a5e46d6648"
@@ -11,9 +10,6 @@ ELEVENLABS_API_KEY="sk_bfc24b20358532f842db22c6ac572e26c4f016a5e46d6648"
 client = ElevenLabs(
     api_key=ELEVENLABS_API_KEY
 )
-
-MP3_DIRECTORY = "mp3_files"
-os.makedirs(MP3_DIRECTORY, exist_ok=True)
 
 #save given text to an mp3 file
 def text_to_speech_file(text: str) -> str:
@@ -33,7 +29,7 @@ def text_to_speech_file(text: str) -> str:
     )
 
     #output MP3 file
-    save_file_path = os.path.join(MP3_DIRECTORY, f"{uuid.uuid4()}.mp3")
+    save_file_path = f"{uuid.uuid4()}.mp3"
 
     #write audio to a file
     with open(save_file_path, "wb") as f:
@@ -50,25 +46,20 @@ def text_to_speech_file(text: str) -> str:
 #allow for an api endpoint
 app = Flask(__name__)
 
+@app.route("/api/process", methods = ["POST"])
 
-# Endpoint to serve the MP3 file
-@app.route('/mp3/<filename>')
-def serve_mp3(filename):
-    return send_from_directory(MP3_DIRECTORY, filename)
+def process_data():
+    data = request.get_json() #get the input as json
 
-# Endpoint to generate and return the MP3 file URL
-@app.route('/generate_audio', methods=['POST'])
-def generate_audio():
-    text = request.args.get('text', 'Default text if none provided')
-    file_path = text_to_speech_file(text)
-    file_name = os.path.basename(file_path)
-    file_url = f"http://localhost:5000/mp3/{file_name}"
-    return jsonify({'file_url': file_url})
+    if 'text' not in data:
+        return jsonify({"error": "Missing 'text' field in the request"}), 400
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    text = data['text']
+
+    result = text_to_speech_file(text)
+
+    return jsonify({"result": result})
 
 
-
-#text_to_speech_file("This is........ a pause.")
-#text_to_speech_file("Hello, my name is Charlotte, nice to meet you")
+if __name__ == "__main__":
+    app.run(debug=True, host = '0.0.0.0',port=5001)

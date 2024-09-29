@@ -11,7 +11,7 @@ class Meditation extends StatefulWidget {
 }
 
 class _MeditationState extends State<Meditation> {
-  int _selectedIndex = 0; // Moved inside the state class
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
