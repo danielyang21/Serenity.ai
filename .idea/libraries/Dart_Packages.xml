@@ -23,6 +23,13 @@
             </list>
           </value>
         </entry>
+        <entry key="audio_session">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/audio_session-0.1.21/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="audioplayers">
           <value>
             <list>
@@ -258,6 +265,27 @@
           <value>
             <list>
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="just_audio">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/just_audio-0.9.40/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="just_audio_platform_interface">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/just_audio_platform_interface-4.3.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="just_audio_web">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/just_audio_web-0.4.13/lib" />
             </list>
           </value>
         </entry>
@@ -519,6 +547,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/assets_audio_player-3.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/assets_audio_player_web-3.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/async-2.11.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/audio_session-0.1.21/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/audioplayers-6.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/audioplayers_android-5.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/audioplayers_darwin-6.0.0/lib" />
@@ -550,6 +579,9 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/http_parser-4.0.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/js-0.6.7/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/just_audio-0.9.40/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/just_audio_platform_interface-4.3.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/just_audio_web-0.4.13/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/leak_tracker-10.0.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.1/lib" />

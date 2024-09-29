@@ -20,6 +20,7 @@ dependencies:
   riverpod: ^2.5.1
   assets_audio_player: ^3.1.1
   audioplayers: ^6.1.0
+  just_audio: ^0.9.40
 
 dev_dependencies:
   flutter_test:
