@@ -82,3 +82,33 @@ Future<void> makePostRequest() async {
     safePrint('Error occurred: $e');
   }
 }
+
+Future<String> sendHelloWorld(String userInput) async {
+  const String url = 'http://172.20.10.2:5001/api/process';
+
+  // Create the request body
+  Map<String, String> requestBody = {
+    'text': userInput,
+  };
+
+  try {
+    // Send POST request
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(requestBody),
+    );
+
+    // Check the response
+    if (response.statusCode == 200) {
+      print('Request successful: ${response.body}');
+      final result = json.decode(response.body);
+      return result["result"];
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+      return 'error';
+    }
+  } catch (error) {
+    return 'error';
+  }
+}
