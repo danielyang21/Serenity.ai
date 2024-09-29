@@ -5,14 +5,12 @@ class MeditationPlay extends StatefulWidget {
   final String imagePath;
   final String title;
   final String audioPath;
-
   const MeditationPlay({
     Key? key,
     required this.imagePath,
     required this.title,
     required this.audioPath,
   }) : super(key: key);
-
   @override
   _MeditationPlayState createState() => _MeditationPlayState();
 }
@@ -22,28 +20,23 @@ class _MeditationPlayState extends State<MeditationPlay> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
-
     // Play the audio when the widget is loaded
     playAudio();
-
     // Listen to audio events
     _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
       setState(() {
         isPlaying = state == PlayerState.playing;
       });
     });
-
     _audioPlayer.onDurationChanged.listen((Duration d) {
       setState(() {
         duration = d;
       });
     });
-
     _audioPlayer.onPositionChanged.listen((Duration p) {
       setState(() {
         position = p;
@@ -81,7 +74,6 @@ class _MeditationPlayState extends State<MeditationPlay> {
     // Calculate the progress percentage
     double progress =
         duration.inSeconds > 0 ? position.inSeconds / duration.inSeconds : 0.0;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -135,11 +127,15 @@ class _MeditationPlayState extends State<MeditationPlay> {
                 Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
-                    child: Image.asset(
-                      widget.imagePath, // Use the passed image path
-                      width: 300,
-                      height: 300,
-                      fit: BoxFit.cover,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 65),
+                        Image.asset(
+                          widget.imagePath, // Use the passed image path
+                          width: 330,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
                     ),
                   ),
                 ),

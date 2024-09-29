@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+// import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:chungi/common/CustomBottomNavBar.dart';
 import 'package:chungi/common/api.dart';
 import 'package:chungi/common/color_theme.cdart.dart';
@@ -88,19 +88,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  Future<void> playAudio(String filePath) async {
-    final audioPlayer = AssetsAudioPlayer.newPlayer();
-    try {
-      await audioPlayer.open(
-        Audio.file(filePath),
-        autoStart: true,
-        showNotification: true,
-      );
-    } catch (error) {
-      print("Error playing audio: $error");
-      throw error; // Re-throw the error to be caught by the caller
-    }
-  }
+  // Future<void> playAudio(String filePath) async {
+  //   final audioPlayer = AssetsAudioPlayer.newPlayer();
+  //   try {
+  //     await audioPlayer.open(
+  //       Audio.file(filePath),
+  //       autoStart: true,
+  //       showNotification: true,
+  //     );
+  //   } catch (error) {
+  //     print("Error playing audio: $error");
+  //     throw error; // Re-throw the error to be caught by the caller
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           print("Attempting to play audio file: $filePath");
 
           if (await File(filePath).exists()) {
-            await playAudio(filePath);
+            // await playAudio(filePath);
           } else {
             print("Audio file does not exist at path: $filePath");
             ScaffoldMessenger.of(context).showSnackBar(

@@ -61,7 +61,7 @@ class _MeditationState extends State<Meditation> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MeditationPlay(
-                            imagePath: 'assets/meditationPic3.png',
+                            imagePath: 'assets/card3hd.png',
                             title: 'Mindfulness',
                             audioPath: 'mindfulness.mp3',
                           ),
@@ -70,7 +70,7 @@ class _MeditationState extends State<Meditation> {
                     },
                     child: Center(
                       child: Image.asset(
-                        'assets/meditationPic3.png',
+                        'assets/pic3HD.png',
                         width: 360,
                       ),
                     ),
@@ -96,7 +96,7 @@ class _MeditationState extends State<Meditation> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MeditationPlay(
-                            imagePath: 'assets/meditationPic1.png',
+                            imagePath: 'assets/card1hd.png',
                             title: 'Anxiety',
                             audioPath: 'anxiety.mp3',
                           ),
@@ -105,7 +105,7 @@ class _MeditationState extends State<Meditation> {
                     },
                     child: Center(
                       child: Image.asset(
-                        'assets/meditationPic1.png',
+                        'assets/pic1HD.png',
                         width: 360,
                       ),
                     ),
@@ -131,7 +131,7 @@ class _MeditationState extends State<Meditation> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MeditationPlay(
-                            imagePath: 'assets/meditationPic2.png',
+                            imagePath: 'assets/card2hd.png',
                             title: 'Positivity',
                             audioPath: 'positive.mp3',
                           ),
@@ -140,7 +140,7 @@ class _MeditationState extends State<Meditation> {
                     },
                     child: Center(
                       child: Image.asset(
-                        'assets/meditationPic2.png',
+                        'assets/pic2HD.png',
                         width: 360,
                       ),
                     ),
