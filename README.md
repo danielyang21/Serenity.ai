@@ -1,2 +1,2 @@
-# The-Chungi
-Repo for Hack The Hill II, The Chungi
+# Serenity.ai
+Repo for Hack The Hill II, Serenity.ai
